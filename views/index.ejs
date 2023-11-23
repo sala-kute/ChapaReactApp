@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Products</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    body {
+      background-color: rgb(19, 19, 52);
+      color: #fff;
+    }
+    h2 {
+      font-size: 18px;
+    }
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    .product-container {
+      display: inline-block;
+      border: 1px solid yellow;
+      padding: 10px;
+      margin: 10px;
+      text-align: center;
+      width: 200px;
+      position: relative;
+    }
+
+    .product-image {
+      width: 95%;
+      height: 50%;
+      object-fit: cover;
+      margin: 10px auto;
+    }
+
+    .product-name {
+      margin-bottom: 10px;
+    }
+    .button-container {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      justify-content: space-between;
+      width: 80%; /* Adjust the width as needed */
+      margin: 0 auto; /* Center the container horizontally */
+    }
+
+    .add-button,
+    .additional-button {
+      flex-grow: 1; /* Distribute available space equally between the buttons */
+    }
+
+    .add-button {
+      width: 35%;
+      margin: 0 auto;
+      display: block;
+    }
+
+    .additional-button {
+      width: 35%;
+      margin-left: 5px;
+      display: none;
+    }
+
+    .green-button {
+      background-color: green;
+      color: white;
+    }
+    .quantity-container {
+      position: absolute;
+      top: 1;
+      right: 0;
+      background-color: orange;
+      color: white;
+      border-radius: 50%;
+      padding: 10px;
+      font-size: 12px;
+    }
+  </style>
+</head>
+<body>
+  <h1 class="text-center">Order Products</h1>
+  <div class="d-flex justify-content-center align-items-center">
+    <h2>No items in cart<br>Total Price: $<span id="totalPrice"></span></h2>
+    <button class="btn btn-success green-button ml-2"  onclick="redirectIfNotEmpty()">Order!</button>
+  </div>
+
+  <div class="container">
+    <% products.forEach(product => { %>
+      <div class="product-container" data-product="<%= product.name %>">
+        <div class="quantity-container" style="display: none;"></div>
+
+        <img src="<%= product.images[0].src %>" alt="<%= product.name %> Image" class="product-image">
+        <span class="product-name"><%= product.name %></span>
+        <span class="product-price"><%= product.sale_price %></span>      
+
+        <div class="button-container">
+          <button type="button" class="btn btn-primary add-button" onclick="addToCart('<%= product.name %>', <%= product.price %>,'<%= product.images[0].src %>')">+</button>
+          <button type="button" class="btn btn-secondary additional-button" style="display: none;" onclick="removeFromCart('<%= product.name %>', <%= product.price %>)">-</button>
+          <!-- Small circular container for quantity -->
+        </div>       
+
+      </div>
+    <% }); %>
+  </div>
+
+  <script>
+    // Define the totalPrice variable
+    var totalPrice = 0.0;
+    var cart = [];
+
+    document.getElementById('totalPrice').textContent = totalPrice.toFixed(2);
+
+    function addToCart(productName, productPrice, imageUrl) {
+      // Check if the product is already in the cart
+      var existingProduct = cart.find(item => item.name === productName);
+
+      if (existingProduct) {
+        // If the product is already in the cart, increase the quantity
+        existingProduct.quantity++;
+      } else {
+        // If the product is not in the cart, add it
+        cart.push({
+          name: productName,
+          price: productPrice,
+          quantity: 1,
+          image: imageUrl
+        });
+      }
+
+      // Update the total price and display it
+      totalPrice += productPrice;
+      document.getElementById('totalPrice').textContent = totalPrice.toFixed(2);
+
+      // Show the additional button
+      const container = document.querySelector(`.product-container[data-product="${productName}"]`);
+      
+      // Check if the container is found before accessing its properties
+      if (container) {
+        const additionalButton = container.querySelector('.additional-button');
+        additionalButton.style.display = 'inline-block';
+
+        // Update the quantity display
+        updateQuantityDisplay(container, existingProduct ? existingProduct.quantity : 1);
+      } else {
+        console.error(`Product container not found for ${productName}`);
+      }
+
+      // You can do additional actions here, such as updating a visual representation of the cart
+      //console.log(cart);
+    }
+
+
+
+    function removeFromCart(productName, productPrice) {
+    // Check if the product is in the cart
+    var existingProduct = cart.find(item => item.name === productName);
+
+    if (existingProduct) {
+      // If the product is in the cart, decrease the quantity
+      existingProduct.quantity--;
+
+      // Update the total price and display it
+      totalPrice -= productPrice;
+      document.getElementById('totalPrice').textContent = totalPrice.toFixed(2);
+
+      // Update the quantity display
+      const container = document.querySelector(`.product-container[data-product="${productName}"]`);
+      updateQuantityDisplay(container, existingProduct.quantity);
+
+      // If the quantity is 0, hide the additional button
+      if (existingProduct.quantity === 0) {
+        const additionalButton = container.querySelector('.additional-button');
+        additionalButton.style.display = 'none';
+      }
+      // You can do additional actions here, such as updating a visual representation of the cart
+      //console.log(cart);
+    }
+  }
+
+  function updateQuantityDisplay(container, quantity) {
+    const quantityContainer = container.querySelector('.quantity-container');
+    quantityContainer.textContent = quantity;
+
+    // Set the position to top right and hide when quantity is 0
+    if (quantity > 0) {
+      quantityContainer.style.display = 'inline-block';
+    } else {
+      quantityContainer.style.display = 'none';
+    }
+  }
+  function redirectIfNotEmpty() {
+    // Check if the cart is not empty (adjust this condition based on your logic)
+    if (isCartNotEmpty()) {
+      // Redirect to the pay.ejs page with the total price as a query parameter
+      window.location.href = '/pay?totalPrice=' + encodeURIComponent(totalPrice);
+    } else {
+      // Display an error message or prevent the redirection
+      alert('Cart is empty. Add items to your cart before placing an order.');
+    }
+  }
+
+  function isCartNotEmpty() {
+    if(cart != [])
+      return true; 
+    else 
+      return false;
+  }
+  </script>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
