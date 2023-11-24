@@ -1,111 +1,111 @@
-<!-- pay.ejs -->
+  <!-- pay.ejs -->
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Payment Page</title>
-  <!-- Bootstrap CSS -->
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-  <style>
-    /* Center the form */
-    body {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      margin: 0;
-    }
-    
-    /* Style for the colored container */
-    .colored-container {
-      background-color: #0D1B34;
-      padding: 100px;
-      color: greenyellow;
-      border-radius: 8px;
-      text-align: center;
-    }
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Page</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+      /* Center the form */
+      body {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        margin: 0;
+      }
+      
+      /* Style for the colored container */
+      .colored-container {
+        background-color: #0D1B34;
+        padding: 100px;
+        color: greenyellow;
+        border-radius: 8px;
+        text-align: center;
+      }
 
-    /* Custom form styling */
-    #user-info-form {
-      color: white;
-      max-width: 400px;
-      margin: 0 auto;
-    }
-  </style>
-</head>
-<body>
-    <div class="colored-container">
+      /* Custom form styling */
+      #user-info-form {
+        color: white;
+        max-width: 400px;
+        margin: 0 auto;
+      }
+    </style>
+  </head>
+  <body>
+      <div class="colored-container">
 
-        <!-- Logo at the top -->
-        <img src="/image/logo.png" alt="Logo" style="max-width: 100px; margin-bottom: 20px;">
+          <!-- Logo at the top -->
+          <img src="/image/logo.png" alt="Logo" style="max-width: 100px; margin-bottom: 20px;">
 
-        <h1>Enter Your Personal Info!</h1>
-        <br>
-        <br>
-        <!-- Custom form for user information -->
-        <form id="user-info-form">
-          <div class="form-group">
-            <label for="fname">First Name:</label>
-            <input type="text" class="form-control" id="fname" name="fname" required>
-          </div>
-    
-          <div class="form-group">
-            <label for="lname">Last Name:</label>
-            <input type="text" class="form-control" id="lname" name="lname" required>
-          </div>
-    
-          <div class="form-group">
-            <label for="email">Email:</label>
-            <input type="email" class="form-control" id="email" name="email" required>
-          </div>
-    
-          <button type="button" style="background-color: green;color:azure; border-radius: 50%; font-size: 1.5em;" class="btn btn-primary" onclick="submitUserInfo()">Submit</button>
-        </form>
-      </div>
-    
+          <h1>Enter Your Personal Info!</h1>
+          <br>
+          <br>
+          <!-- Custom form for user information -->
+          <form id="user-info-form">
+            <div class="form-group">
+              <label for="fname">First Name:</label>
+              <input type="text" class="form-control" id="fname" name="fname" required>
+            </div>
+      
+            <div class="form-group">
+              <label for="lname">Last Name:</label>
+              <input type="text" class="form-control" id="lname" name="lname" required>
+            </div>
+      
+            <div class="form-group">
+              <label for="email">Email:</label>
+              <input type="email" class="form-control" id="email" name="email" required>
+            </div>
+      
+            <button type="button" style="background-color: green;color:azure; border-radius: 50%; font-size: 1.5em;" class="btn btn-primary" onclick="submitUserInfo()">Submit</button>
+          </form>
+        </div>
+      
 
 
 
-  <form id="payment-form" method="POST" action="https://api.chapa.co/v1/hosted/pay">
-    <input type="hidden" name="public_key" value="CHAPUBK_TEST-t3FlmVYKFFW917GQD2gM4THN9IiaqWd3" />
-    <input type="hidden" name="tx_ref" id="tx_ref" value="" />
-    <input type="hidden" name="amount" id="amount" value="" />
-    <input type="hidden" name="currency" id="currency" value="" />
-    <input type="hidden" name="email" id="email" value="" />
-    <input type="hidden" name="first_name" id="first_name" value="" />
-    <input type="hidden" name="last_name" id="last_name" value="" />
-    <input type="hidden" name="title" value="Let us do this" />
-    <input type="hidden" name="description" value="Paying with Confidence with chapa" />
-    <input type="hidden" name="logo" value="https://chapa.link/asset/images/chapa_swirl.svg" />
-    <input type="hidden" name="callback_url" value="http://localhost:3000" />
-    <input type="hidden" name="return_url" value="http://localhost:3000" />
-    <input type="hidden" name="meta[title]" value="test" />
-    <button type="submit" style="display: none;"></button>
-  </form>
+    <form id="payment-form" method="POST" action="https://api.chapa.co/v1/hosted/pay">
+      <input type="hidden" name="public_key" value="CHAPUBK_TEST-t3FlmVYKFFW917GQD2gM4THN9IiaqWd3" />
+      <input type="hidden" name="tx_ref" id="tx_ref" value="" />
+      <input type="hidden" name="amount" id="amount" value="" />
+      <input type="hidden" name="currency" id="currency" value="" />
+      <input type="hidden" name="email" id="email" value="" />
+      <input type="hidden" name="first_name" id="first_name" value="" />
+      <input type="hidden" name="last_name" id="last_name" value="" />
+      <input type="hidden" name="title" value="Let us do this" />
+      <input type="hidden" name="description" value="Paying with Confidence with chapa" />
+      <input type="hidden" name="logo" value="https://chapa.link/asset/images/chapa_swirl.svg" />
+      <input type="hidden" name="callback_url" value="http://localhost:3000" />
+      <input type="hidden" name="return_url" value="http://localhost:3000" />
+      <input type="hidden" name="meta[title]" value="test" />
+      <button type="submit" style="display: none;"></button>
+    </form>
 
-  <script>
-    function submitUserInfo() {
-        const timestamp = Date.now();
+    <script>
+      function submitUserInfo() {
+          const timestamp = Date.now();
 
-      // Get user input from the custom form
-      const fname = document.getElementById('fname').value;
-      const lname = document.getElementById('lname').value;
-      const email = document.getElementById('email').value;
+        // Get user input from the custom form
+        const fname = document.getElementById('fname').value;
+        const lname = document.getElementById('lname').value;
+        const email = document.getElementById('email').value;
 
-      // Set values in Chapa HTML checkout form
-      document.getElementById('tx_ref').value = `${fname}-tx-${timestamp}`;
-      document.getElementById('amount').value = '<%= totalPrice %>'; // Replace with your logic
-      document.getElementById('currency').value = 'ETB';
-      document.getElementById('email').value = email;
-      document.getElementById('first_name').value = fname;
-      document.getElementById('last_name').value = lname;
+        // Set values in Chapa HTML checkout form
+        document.getElementById('tx_ref').value = `${fname}-tx-${timestamp}`;
+        document.getElementById('amount').value = '<%= totalPrice %>'; // Replace with your logic
+        document.getElementById('currency').value = 'ETB';
+        document.getElementById('email').value = email;
+        document.getElementById('first_name').value = fname;
+        document.getElementById('last_name').value = lname;
 
-      // Trigger Chapa HTML checkout form submission
-      document.getElementById('payment-form').submit();
-    }
+        // Trigger Chapa HTML checkout form submission
+        document.getElementById('payment-form').submit();
+      }
 
-  </script>
-</body>
-</html>
+    </script>
+  </body>
+  </html>
